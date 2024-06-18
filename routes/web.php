@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Laramix\Laramix;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+app(Laramix::class)->routes();
