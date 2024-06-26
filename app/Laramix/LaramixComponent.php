@@ -3,7 +3,7 @@ namespace App\Laramix;
 
 use Closure;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 use ReflectionClass;
 use ReflectionFunction;
@@ -15,23 +15,32 @@ class LaramixComponent {
         protected string $name,
 
     ) {
-
+        $this->name = self::namespaceToName($name);
     }
+
+    public const NAMESPACE = 'LaramixComponent';
 
     public static function nameToNamespace(string $name) {
-        return str($name)->slug('_')->camel()->replace('_','')->__toString();
+        return str($name)->replace('$','＄')->replace('.', '→')->__toString();
     }
 
-    private function compile() {
-        try {
-            return $this->_compile();
-        } catch (\Throwable $e) {
-             $this->_compile(true);
-             throw $e;
+    public static function namespaceToName(string $namespace) {
+        return str($namespace)->replace('＄','$')->replace('→', '.')->__toString();
+    }
+
+    private static $compiled = [];
+
+    public function compile() {
+        $cacheName = static::namespaceToName($this->name);
+        if (isset(static::$compiled[$cacheName])) {
+            return static::$compiled[$cacheName];
         }
+        $compiledCompoent = $this->_compile();
+        static::$compiled[$cacheName] = $compiledCompoent;
+        return $compiledCompoent;
     }
 
-    private function _compile(bool $__debug = false) {
+    private function _compile() {
         $path = $this->filePath;
         $name = $this->name;
         $existingClasses = collect(get_declared_classes())->toArray();
@@ -41,15 +50,37 @@ class LaramixComponent {
 
             $__path = $path;
 
-            $items = (static function () use ($__path, $__debug, $name, $existingClasses) {
-                $namespace ='LaramixRoute\\' . self::nameToNamespace($name);
-                $contents = 'namespace ' . $namespace .'; ?>';
+            $items = (static function () use ($__path, $name, $existingClasses) {
+                $namespace = self::NAMESPACE . '\\' . self::nameToNamespace($name);
+                $contents = '<?php namespace ' . $namespace .';';
+
+
+                $contents .='
+                class actions extends \App\Laramix\LaramixComponentActions {
+                    public static function info() {
+                    return json_decode(
+                    <<<\'EOT\'
+                    ' . json_encode([
+                        'name' => $name,
+                        'component' => LaramixComponent::namespaceToName($name),
+                        'namespace' => $namespace,
+                        'path' => $__path,
+                    ]) . '
+                    EOT, true);
+                    }
+
+                };';
+
+                $contents .='?>';
+
                 $contents .= @file_get_contents($__path);
-                if ($__debug) {
-                    require $__path;
-                } else {
-                    eval($contents);
+                if (!Storage::disk('local')->exists('laramix')) {
+                    Storage::disk('local')->makeDirectory('laramix');
                 }
+
+                Storage::put('laramix/' . $name . '.php', $contents);
+                $filePath = Storage::path('laramix/' . $name . '.php');
+                require $filePath;
 
                 $variables = array_map(function (mixed $variable) {
                     return $variable;
@@ -85,7 +116,13 @@ class LaramixComponent {
             $props['_props'] = $variables['props'];
         }
         foreach ($variables as $key => $value) {
-            if ($value instanceof Closure && $key !== 'props') {
+            if ($value instanceof Action) {
+                $props['actions'][] = ($value->isInertia() ?  '$'  : '') . $key;
+                $props['_actions'][$key] = $value;
+            }
+
+            if ($value instanceof Closure  && $key !== 'props') {
+
                 $reflection = new ReflectionFunction($value);
                 $returns = $reflection->getReturnType();
                 //? Could make default not an inertia response? Perhaps configurable.
@@ -102,21 +139,25 @@ class LaramixComponent {
 
     public function handleAction(Request $request, string $action) {
         $component = $this->compile();
-        $args = $request->input('_args', []);
+        $args =  $request->input('_args', []);
 
 
-        if (in_array($action, $component['actions'])) {
-            return app()->call($component['_actions'][$action], $args);
+        if (in_array($action, $component['actions']) || in_array('$'. $action, $component['actions'])) {
+            if ($component['_actions'][$action] instanceof Action) {
+                $args = ['input' => $args];
+            }
+            return ImplicitlyBoundMethod::call(app(), $component['_actions'][$action], $args);
         }
 
-        if (in_array('$'. $action, $component['actions'])) {
-            return app()->call($component['_actions'][$action], $args);
-        }
         abort(404);
     }
 
     public function classes() {
         return $this->compile()['_classes'];
+    }
+
+    public function actions() {
+        return $this->compile()['_actions'];
     }
 
     public function props() {
@@ -126,7 +167,8 @@ class LaramixComponent {
         unset($component['_actions']);
         unset($component['_classes']);
         if (isset($component['_props'])) {
-            $component['props'] = app()->call($component['_props']);
+            $component['props'] =  ImplicitlyBoundMethod::call(app(), $component['_props'], request()->route()->parameters());
+            //$component['props'] =  app()->call($component['_props'], request()->route()->parameters());
             unset($component['_props']);
         }
         return $component;

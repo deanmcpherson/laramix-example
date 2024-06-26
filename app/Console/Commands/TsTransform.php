@@ -2,7 +2,7 @@
 
 namespace Spatie\LaravelTypeScriptTransformer\Commands;
 
-use App\TypeScriptTransformer\TypeScriptTransformer;
+use App\Laramix\TypeScriptTransformer\TypeScriptTransformer;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;

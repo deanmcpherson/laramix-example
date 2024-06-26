@@ -1,5 +1,7 @@
 <?php
 
+use App\Laramix\LaramixTypeTransformer;
+
 return [
     /*
      * The paths where typescript-transformer will look for PHP classes
@@ -18,9 +20,9 @@ return [
      */
 
     'collectors' => [
+        App\Laramix\LaramixTypeCollector::class,
         Spatie\TypeScriptTransformer\Collectors\DefaultCollector::class,
         Spatie\TypeScriptTransformer\Collectors\EnumCollector::class,
-        App\Laramix\LaramixTypeCollector::class,
     ],
 
     /*
@@ -29,6 +31,7 @@ return [
      */
 
     'transformers' => [
+        LaramixTypeTransformer::class,
         Spatie\LaravelTypeScriptTransformer\Transformers\SpatieStateTransformer::class,
         Spatie\TypeScriptTransformer\Transformers\EnumTransformer::class,
         Spatie\TypeScriptTransformer\Transformers\SpatieEnumTransformer::class,

@@ -2,8 +2,11 @@
 
 namespace App\Laramix;
 
+use App\Data\ExampleDTO;
+
 class LaramixRouter {
     public function routes() : \Illuminate\Support\Collection {
+
 
         $directory = app(Laramix::class)->routeDirectory();
         $files = collect(scandir($directory))

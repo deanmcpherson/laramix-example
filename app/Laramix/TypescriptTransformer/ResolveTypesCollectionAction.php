@@ -1,6 +1,6 @@
 <?php
 
-namespace App\TypeScriptTransformer;
+namespace App\Laramix\TypeScriptTransformer;
 
 use App\Laramix\LaramixComponent;
 use Exception;
@@ -24,11 +24,9 @@ class ResolveTypesCollectionAction extends \Spatie\TypeScriptTransformer\Actions
             try {
 
                 $classes = (new ResolveClassesInPhpFileAction())->execute($fileInfo);
-
                 if ($classes && $fileInfo->getExtension() !== 'php') {
                     $filename = LaramixComponent::nameToNamespace($fileInfo->getFilenameWithoutExtension());
                     $component = new LaramixComponent($fileInfo->getRealPath(), $filename );
-
                     foreach ($component->classes() as $name => $class) {
                         yield $name => $class;
                     }
