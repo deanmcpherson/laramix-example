@@ -1,5 +1,5 @@
 <?php
 
-use App\Laramix\Laramix;
+use Laramix\Laramix\Facades\Laramix;
 
-app(Laramix::class)->routes();
+Laramix::routes();

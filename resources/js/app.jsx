@@ -1,17 +1,23 @@
 import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/react'
+
+import Laramix from '../../vendor/laramix/laramix/resources/js/react/laramix';
 import { createRoot } from 'react-dom/client'
-
-
+import routeManifest  from './laramix-routes.manifest.json';
 
 createInertiaApp({
     resolve: name => {
-        const Laramix = import.meta.glob('./Laramix.tsx', { eager: true })
-        const pages = import.meta.glob('./Pages/**/*.tsx', {eager: true});
-        Object.assign(pages, Laramix);
-        const page = pages[`./${name}.tsx`];
 
+        const routes =  import.meta.glob('./routes/*.tsx');
+
+        if (name === 'Laramix') {
+            Laramix.routes = routes;
+            Laramix.manifest = routeManifest;
+            return Laramix;
+        }
+        const pages = import.meta.glob('./Pages/**/*.tsx', {eager: true});
+        const page = pages[`./${name}.tsx`];
         return page;
     },
 

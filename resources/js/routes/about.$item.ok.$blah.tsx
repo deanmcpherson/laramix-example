@@ -1,41 +1,33 @@
-`<?php
+/* php */`<?php
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\LaravelData\Data;
+use function Laramix\Laramix\action;
+use function Laramix\Laramix\v;
 
-class Props extends Data {
-    public function __construct(public string $id) {}
-};
+$props = action(
+    responseType: v()->infer([
+        'item' => v()->number(),
+        'blah' => v()->any(),
+    ]),
+    handler: fn(int $item, string $blah) => [
+        'item' => $item,
+        'blah' => $blah * 5,
+    ]
+);
 
-class Item extends Data {
-    public function __construct(
-        public string $id,
-        public string $name
-    ) {
-    }
-}
-
-$props = fn(Request $request, \App\Models\User $item, int $blah): Item => dd($item, $blah);
-
-
-$goToHome = fn(Data $item) => Inertia::location('/about');
+$goToHome = fn() => throw new \Exception("Hello I'm an exception");
 
 ?>`
+//`/* tsx */`
 
 import React from "react"
 
 
-interface Props extends about.$item.ok.$blah.Props {};
-interface Actions extends about.$item.ok.$blah.actions {};
-
-export default function Item({props, actions}: {props: Props, actions: Actions}) {
+export default function Item({props, actions}: about.$item.ok.$blah.Props) {
 
     return <div>
-        This is an item {props.id}
-
-
-        <button onClick={() => actions.goToHome({item: {id: 123, name: 321}})}>Go home</button>
+        <h3>about.$item.ok.$blah</h3>
+        This is an item {props.item} ok? <button onClick={() => actions.goToHome()}>Go home (throw error)</button>
     </div>
 }
 

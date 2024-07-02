@@ -1,33 +1,59 @@
+declare namespace _index {
+export type Props = {
+                props: {test: string, test2: {
+name: string;
+age: number;
+}[]};
+                actions: { props: (input?: any) => {test: string, test2: {
+name: string;
+age: number;
+}[]};
+test: (payload: {testman: string;}) => void;
+ };
+                eager: true|undefined;
+             };
+}
 declare namespace _root {
 export type Props = {
-loggedIn: boolean;
-test: string;
-};
-export type actions = { login: (input: {email: string, number: number|undefined|null, password: string, props: {
-loggedIn: boolean;
-test: string;
-}}) => any;
-logout: () => void;
+                props: {loggedIn: boolean};
+                actions: { props: (input?: any) => {loggedIn: boolean};
+login: (input: {name: string|undefined|null, email: string, password: string}) => any;
+logout: (input?: any) => any;
  };
+                eager: true|undefined;
+             };
+}
+declare namespace about {
+export type Props = {
+                props: any;
+                actions: {  };
+                eager: true|undefined;
+             };
+}
+declare namespace about._index {
+export type Props = {
+                props: any;
+                actions: {  };
+                eager: true|undefined;
+             };
 }
 declare namespace about.$item {
 export type Item = {
 itemId: string;
 };
 export type Props = {
-id: string;
-};
-export type actions = { goToHome: () => void;
+                props: about.$item.Item;
+                actions: { goToHome: () => void;
  };
+                eager: true|undefined;
+             };
 }
 declare namespace about.$item.ok.$blah {
-export type Item = {
-id: string;
-name: string;
-};
 export type Props = {
-id: string;
-};
-export type actions = { goToHome: (payload: {item: any;}) => void;
+                props: {item: number, blah: any};
+                actions: { props: (input?: any) => {item: number, blah: any};
+goToHome: () => void;
  };
+                eager: true|undefined;
+             };
 }

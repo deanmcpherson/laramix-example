@@ -1,62 +1,77 @@
-`<?
+/* php */ `
+<?
 
-use Spatie\LaravelData\Data;
-use function App\Laramix\action;
+use function Laramix\Laramix\{v, action};
 
-class Props extends Data {
-    public bool $loggedIn;
-    public string $test;
-}
-
-
-$props = fn(): Props => Props::from([
-    'loggedIn' => !!auth()->id(),
-    'test' => '321'
-]);
-
-$requestShape = v()->object([
-    'email' => v()->string()->email(),
-    'number' => v()->number()->optional(),
-    'password' => v()->string(),
-    'props' => v()->dto(Props::class),
-]);
+$props = action(
+   middleware: ['guest'],
+    responseType: v()->object([
+        'loggedIn' => v()->boolean()
+    ]),
+    handler: function() {
+        return [
+            'loggedIn' => session()->has('fakeLoggedIn')
+        ];
+    }
+);
 
 $login = action(
-    requestValidation: $requestShape,
-    handler: function($email, $number, $password, $props) {
-        auth()->loginUsingId(1);
+    requestType:  v()->object([
+        'name' => v()->string()->optional(),
+        'email' => v()->string()->rules('email')->default('hi@there.com'),
+        'password' => v()->string()
+    ]),
+    handler: function($email, $name, $password) {
+        session()->put('fakeLoggedIn', true);
         return back(303);
     }
 );
 
+$logout = action(
+    handler: function() {
+        session()->forget('fakeLoggedIn');
+        return back(303);
+    });
+?> `;
+// /* tsx */`
 
-$logout = function() {
-    auth()->logout();
-    return back(303);
-};
-
-?>`;
-
-import { Outlet } from "../Laramix";
+import { Outlet, Link } from "@laramix/laramix";
 import React from "react";
 
-export default function Root({
-    props,
-    actions
-}: {
-    actions: _root.actions;
-    props: _root.Props;
-}) {
+export default function Root({ props, actions }: _root.Props) {
     return (
-        <div>
+        <div
+            style={{
+                padding: "1rem",
+                fontFamily:
+                    'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"',
+                border: "2px solid #ddd",
+            }}
+        >
+            <h1>Root layout</h1>
             Root layout. Logged in ?{" "}
             {props.loggedIn ? (
                 <button onClick={() => actions.logout()}>log out</button>
             ) : (
-                <button onClick={() => actions.login({email: 'test', password: 'test123', number: 123, props: {loggedIn: false, test: 'hi there'}})}>
+                <button
+                    onClick={() =>
+                        actions.login({
+                            email: "test@test.com",
+                            password: "test123",
+                            name: "hey there",
+                        })
+                    }
+                >
                     login
                 </button>
             )}
+            <div style={{display: 'flex', gap: '.5rem', margin: '1rem 0'}}>
+            <Link href="/">index</Link>
+            <Link href="/about">About (index)</Link>
+            <Link href="/about/asdsad">About ($item)</Link>
+            <Link href="/about/1/ok/2">about.$item.ok.$blah</Link>
+            </div>
+
             <Outlet />
         </div>
     );

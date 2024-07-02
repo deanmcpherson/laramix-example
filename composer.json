@@ -6,12 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "inertiajs/inertia-laravel": "^1.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "spatie/enum": "^3.13",
         "spatie/laravel-data": "^4.7",
-        "spatie/laravel-typescript-transformer": "^2.4"
+        "inertiajs/inertia-laravel": "^1.2",
+        "spatie/laravel-typescript-transformer": "^2.4",
+        "laramix/laramix": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -28,17 +29,19 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "app/V/functions.php",
-            "app/Laramix/function"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../laramix"
+        }
+    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
