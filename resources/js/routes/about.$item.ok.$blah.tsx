@@ -25,7 +25,7 @@ import React from "react"
 
 export default function Item({props, actions}: about.$item.ok.$blah.Props) {
 
-    return <div>
+    return <div style={{border: '1px solid #ddd', padding: '1rem'}}>
         <h3>about.$item.ok.$blah</h3>
         This is an item {props.item} ok? <button onClick={() => actions.goToHome()}>Go home (throw error)</button>
     </div>

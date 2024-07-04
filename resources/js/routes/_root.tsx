@@ -4,7 +4,7 @@
 use function Laramix\Laramix\{v, action};
 
 $props = action(
-   middleware: ['guest'],
+   //middleware: ['guest'],
     responseType: v()->object([
         'loggedIn' => v()->boolean()
     ]),
@@ -67,9 +67,9 @@ export default function Root({ props, actions }: _root.Props) {
             )}
             <div style={{display: 'flex', gap: '.5rem', margin: '1rem 0'}}>
             <Link href="/">index</Link>
-            <Link href="/about">About (index)</Link>
-            <Link href="/about/asdsad">About ($item)</Link>
-            <Link href="/about/1/ok/2">about.$item.ok.$blah</Link>
+            <Link href="/about">/about (index)</Link>
+            <Link href="/about/asdsad">/about/$item</Link>
+            <Link href="/about/1/ok/2">/about/$item/ok/$blah</Link>
             </div>
 
             <Outlet />
