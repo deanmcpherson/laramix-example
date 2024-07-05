@@ -35,7 +35,7 @@ export default function Home({props, actions}:  _index.Props) {
     const [test, setTest] = React.useState<string>('');
     console.log(test)
    return <div style={{border: '1px solid #ddd', padding: '1rem'}}>
-        <h2 onClick={() => actions.test({exampleInput: 'test'}).then(res => setTest(res.data))}>Index page</h2>
+        <h2 onClick={() => actions.test.call({exampleInput: 'test'}).then(res => setTest(res.data))}>Index page</h2>
         Welcome to my homepage! {props.test}
         Result of test: {test}
     </div>

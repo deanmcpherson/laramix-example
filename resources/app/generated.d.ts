@@ -13,8 +13,14 @@ declare namespace _api {
     export type Props = {
         props: any;
         actions: {
-            props: (input?: any) => Promise<{ data: any }>;
-            loadThings: (input?: any) => Promise<{ data: { test: number } }>;
+            props: {
+                call: (input?: any) => Promise<{ data: any }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
+            loadThings: {
+                call: (input?: any) => Promise<{ data: { test: number } }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
         };
         eager: true | undefined;
     };
@@ -29,19 +35,25 @@ declare namespace _index {
             }[];
         };
         actions: {
-            props: (input?: any) => Promise<{
-                data: {
-                    test: string;
-                    test2: {
-                        name: string;
-                        age: number;
-                    }[];
-                };
-            }>;
-            test: (
-                payload: { exampleInput: string },
-                options?: Laramix.VisitOptions,
-            ) => Promise<any>;
+            props: {
+                call: (input?: any) => Promise<{
+                    data: {
+                        test: string;
+                        test2: {
+                            name: string;
+                            age: number;
+                        }[];
+                    };
+                }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
+            test: {
+                call: (payload: { exampleInput: string }) => Promise<any>;
+                visit: (
+                    payload: { exampleInput: string },
+                    options?: Laramix.VisitOptions,
+                ) => void;
+            };
         };
         eager: true | undefined;
     };
@@ -50,13 +62,29 @@ declare namespace _root {
     export type Props = {
         props: { loggedIn: boolean };
         actions: {
-            props: (input?: any) => Promise<{ data: { loggedIn: boolean } }>;
-            login: (input: {
-                name: string | undefined | null;
-                email: string;
-                password: string;
-            }) => Promise<{ data: any }>;
-            logout: (input?: any) => Promise<{ data: any }>;
+            props: {
+                call: (input?: any) => Promise<{ data: { loggedIn: boolean } }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
+            login: {
+                call: (input: {
+                    name: string | undefined | null;
+                    email: string;
+                    password: string;
+                }) => Promise<{ data: any }>;
+                visit: (
+                    input: {
+                        name: string | undefined | null;
+                        email: string;
+                        password: string;
+                    },
+                    options?: Laramix.VisitOptions,
+                ) => void;
+            };
+            logout: {
+                call: (input?: any) => Promise<{ data: any }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
         };
         eager: true | undefined;
     };
@@ -81,18 +109,29 @@ declare namespace about.$item {
     };
     export type Props = {
         props: about.$item.Item;
-        actions: { goToHome: (options?: Laramix.VisitOptions) => Promise<any> };
+        actions: {
+            goToHome: {
+                call: () => Promise<any>;
+                visit: (options?: Laramix.VisitOptions) => void;
+            };
+        };
         eager: true | undefined;
     };
 }
 declare namespace about.$item.ok.$blah {
     export type Props = {
-        props: { item: number; blah: any };
+        props: { item: number; blah: number };
         actions: {
-            props: (
-                input?: any,
-            ) => Promise<{ data: { item: number; blah: any } }>;
-            goToHome: (options?: Laramix.VisitOptions) => Promise<any>;
+            props: {
+                call: (
+                    input?: any,
+                ) => Promise<{ data: { item: number; blah: number } }>;
+                visit: (input?: any, options?: Laramix.VisitOptions) => void;
+            };
+            goToHome: {
+                call: () => Promise<any>;
+                visit: (options?: Laramix.VisitOptions) => void;
+            };
         };
         eager: true | undefined;
     };

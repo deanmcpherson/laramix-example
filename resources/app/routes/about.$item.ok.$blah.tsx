@@ -27,7 +27,7 @@ export default function Item({props, actions}: about.$item.ok.$blah.Props) {
 
     return <div style={{border: '1px solid #ddd', padding: '1rem'}}>
         <h3>about.$item.ok.$blah</h3>
-        This is an item {props.item}, with blah * 5 {props.blah} ok? <button onClick={() => actions.goToHome()}>Go home (throw error)</button>
+        This is an item {props.item}, with blah * 5 {props.blah} ok? <button onClick={() => actions.goToHome.visit()}>Go home (throw error)</button>
     </div>
 }
 

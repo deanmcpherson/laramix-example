@@ -10,7 +10,7 @@ return [
 
     'auto_discover_types' => [
         app_path(),
-        resource_path('js/routes'),
+        resource_path('app/routes'),
     ],
 
     /*
@@ -56,7 +56,7 @@ return [
      * The package will write the generated TypeScript to this file.
      */
 
-    'output_file' => resource_path('js/generated.d.ts'),
+    'output_file' => resource_path('app/generated.d.ts'),
 
     /*
      * When the package is writing types to the output file, a writer is used to

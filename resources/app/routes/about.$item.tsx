@@ -24,7 +24,7 @@ import React from "react"
 export default function Item({props, actions}: about.$item.Props) {
     return <div>
         <h3>about.$item</h3>
-        This is an item {props.itemId} asds <button onClick={() => actions.goToHome()}>Go home (server driven redirect)</button>
+        This is an item {props.itemId} asds <button onClick={() => actions.goToHome.visit()}>Go home (server driven redirect)</button>
         <br />
         Another outlet:
 

@@ -53,11 +53,11 @@ export default function Root({ props, actions }: _root.Props) {
             <h1>Root layout</h1>
             Root layout. Logged in ?{" "}
             {props.loggedIn ? (
-                <button onClick={() => actions.logout()}>log out</button>
+                <button onClick={() => actions.logout.visit()}>log out</button>
             ) : (
                 <button
                     onClick={() =>
-                        actions.login({
+                        actions.login.visit({
                             email: "test@test.com",
                             password: "test123",
                             name: "hey there",
