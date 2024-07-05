@@ -6,13 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "inertiajs/inertia-laravel": "^1.2",
+        "laramix/laramix": "dev-main",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "laravel/vapor-cli": "^1.65",
+        "laravel/vapor-core": "^2.37",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "spatie/enum": "^3.13",
         "spatie/laravel-data": "^4.7",
-        "inertiajs/inertia-laravel": "^1.2",
-        "spatie/laravel-typescript-transformer": "^2.4",
-        "laramix/laramix": "dev-main"
+        "spatie/laravel-typescript-transformer": "^2.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

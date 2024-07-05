@@ -17,8 +17,8 @@
       "baseUrl": ".",
       "isolatedModules": true,
       "paths": {
-        "~/*": ["./resources/js/*"],
-        "@laramix/*": ["../../vendor/laramix/laramix/resources/js/react/*"],
+        "~/*": ["./resources/app/*"],
+        "@laramix/*": ["../../vendor/laramix/laramix/resources/app/react/*"],
       },
       "lib": ["es6", "es7", "es2019", "dom", "dom.iterable", "es2021"]
     },

@@ -21,8 +21,8 @@ export default defineConfig({
         laravel({
             input: [
                 "resources/css/app.css",
-                "resources/js/app.jsx",
-                 ...sync("resources/js/routes/*.tsx")
+                "resources/app/app.jsx",
+                 ...sync("resources/app/routes/*.tsx")
             ],
             refresh: true,
         }),
@@ -30,7 +30,7 @@ export default defineConfig({
             {
                 name: 'php types',
                 watchKind: ['add', 'change', 'unlink'],
-                watch:[path.resolve("resources/js/routes/**.tsx"), path.resolve('app/**/*.php')],
+                watch:[path.resolve("resources/app/routes/**.tsx"), path.resolve('app/**/*.php')],
                 run: "php artisan laramix:typescript-transform && php artisan laramix:publish-routes-manifest"
             },
 
@@ -39,7 +39,7 @@ export default defineConfig({
    ],
    resolve: {
     alias: {
-        "@": path.resolve(__dirname, "resources/js"),
+        "@": path.resolve(__dirname, "resources/app"),
         "@laramix": path.resolve(__dirname, "./vendor/laramix/laramix/resources/js/react"),
     },
 }
