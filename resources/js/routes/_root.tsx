@@ -1,5 +1,7 @@
-/* php */ `
+/* php */`
 <?
+
+use Inertia\Response;
 
 use function Laramix\Laramix\{v, action};
 
@@ -10,7 +12,7 @@ $props = action(
     ]),
     handler: function() {
         return [
-            'loggedIn' => session()->has('fakeLoggedIn')
+            'loggedIn' => (bool) session()->get('fakeLoggedIn')
         ];
     }
 );
@@ -29,7 +31,7 @@ $login = action(
 
 $logout = action(
     handler: function() {
-        session()->forget('fakeLoggedIn');
+        session()->put('fakeLoggedIn', false);
         return back(303);
     });
 ?> `;

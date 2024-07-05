@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "laramix/example",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Example application for laramix.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
@@ -38,8 +38,8 @@
     },
     "repositories": [
         {
-            "type": "path",
-            "url": "../laramix"
+            "type": "vcs",
+            "url": "https://github.com/deanmcpherson/laramix"
         }
     ],
     "scripts": {

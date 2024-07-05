@@ -5,7 +5,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import Laramix from '../../vendor/laramix/laramix/resources/js/react/laramix';
 import { createRoot } from 'react-dom/client'
 import routeManifest  from './laramix-routes.manifest.json';
-const routes =  import.meta.glob('./routes/*.tsx');
+const routes =  import.meta.glob('./routes/*.tsx', {eager: true});
 
 const LaramixComponent = Laramix({
     routes: routes,
